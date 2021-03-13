@@ -27,6 +27,18 @@ public class SourceToken {
         return this.type == SourceToken.Type.KW_IMPORT;
     }
 
+    public boolean isPackageKeyword() {
+        return this.type == SourceToken.Type.KW_PACKAGE;
+    }
+
+    public boolean isStaticKeyword() {
+        return this.type == SourceToken.Type.KW_STATIC;
+    }
+
+    public boolean isAsterisk() {
+        return this.type == SourceToken.Type.ASTERISK;
+    }
+
     public boolean isSemi() {
         return this.type == SourceToken.Type.SEMI;
     }

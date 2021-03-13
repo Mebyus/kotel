@@ -1,6 +1,6 @@
 public class ImportToken {
     public static enum Type {
-        PKG, MEMBER, WHOLE, STATIC_MEMBER, STATIC_WHOLE
+        ILLEGAL, PKG, MEMBER, WHOLE, STATIC_MEMBER, STATIC_WHOLE
     }
 
     public Type type;
@@ -11,5 +11,10 @@ public class ImportToken {
         this.type = type;
         this.pkgName = pkgName;
         this.member = member;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%15s   %30s   %s", this.type.name(), this.pkgName, this.member);
     }
 }

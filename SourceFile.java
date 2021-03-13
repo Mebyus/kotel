@@ -1,8 +1,9 @@
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.util.Iterator;
 
 public class SourceFile {
-    public static SourceFile from(Path path) {
+    public static SourceFile from(Path path) throws FileNotFoundException {
         return new SourceFile(path.getFileName().toString(), path.toString(), ImportTokenIterator.from(path));
     }
 
