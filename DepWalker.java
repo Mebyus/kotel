@@ -14,8 +14,8 @@ public class DepWalker {
         return this.structure.graph();
     }
 
-    public String[] paths() {
-        return this.structure.listPaths();
+    public DepStructure getStructure() {
+        return this.structure;
     }
 
     public void walk() {
