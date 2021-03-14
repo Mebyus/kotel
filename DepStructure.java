@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class DepStructure {
-    public static class Pkg {
+    public static class SrcFile {
         public String name;
         public String path;
         private HashSet<String> imports;
 
-        Pkg(String name, String path) {
+        SrcFile(String name, String path) {
             this.name = name;
             this.path = path;
             this.imports = new HashSet<String>();
@@ -18,13 +18,46 @@ public class DepStructure {
         public void addImport(String name) {
             this.imports.add(name);
         }
+    }
+
+    public static class Pkg {
+        public String name;
+        public String path;
+        private HashSet<String> imports;
+        private SrcFile current;
+        private ArrayList<SrcFile> files;
+
+        Pkg(String name, String path) {
+            this.name = name;
+            this.path = path;
+            this.imports = new HashSet<String>();
+            this.files = new ArrayList<SrcFile>();
+        }
+
+        public void addImport(String name) {
+            this.current.addImport(name);
+            this.imports.add(name);
+        }
 
         public boolean contains(String name) {
             return this.imports.contains(name);
         }
 
         public void addFile(String name, String path) {
+            this.current = new SrcFile(name, path);
+            this.files.add(this.current);
+        }
 
+        public int getNumberOfFiles() {
+            return this.files.size();
+        }
+
+        public String[] listPaths() {
+            String[] paths = new String[this.files.size()];
+            for (int i = 0; i < this.files.size(); i++) {
+                paths[i] = this.files.get(i).path;
+            }
+            return paths;
         }
     }
 
@@ -43,6 +76,23 @@ public class DepStructure {
         this.pkgs = new ArrayList<DepStructure.Pkg>();
         this.pkgIndexes = new HashMap<String, Integer>();
         this.graph = new ArrayList<ArrayList<Integer>>();
+    }
+
+    public String[] listPaths() {
+        int total = 0;
+        for (int i = 0; i < this.pkgs.size(); i++) {
+            total += this.pkgs.get(i).getNumberOfFiles();
+        }
+        String[] paths = new String[total];
+        int pathsIndex = 0;
+        for (int i = 0; i < this.pkgs.size(); i++) {
+            String[] pkgFilesPaths = this.pkgs.get(i).listPaths();
+            for (int j = 0; j < this.pkgs.get(i).getNumberOfFiles(); j++) {
+                paths[pathsIndex] = pkgFilesPaths[j];
+                pathsIndex++;
+            }
+        }
+        return paths;
     }
 
     public String getPath(String name) {

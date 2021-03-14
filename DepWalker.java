@@ -10,6 +10,14 @@ public class DepWalker {
         this.factory = factory;
     }
 
+    public int[][] graph() {
+        return this.structure.graph();
+    }
+
+    public String[] paths() {
+        return this.structure.listPaths();
+    }
+
     public void walk() {
         String next = this.structure.next();
         while (next != null) {
@@ -35,6 +43,7 @@ public class DepWalker {
     }
 
     private void handle(ImportToken token) {
+        System.out.println(String.format("%15s  %30s", token.type.name(), token.pkgName));
         if (token.type == ImportToken.Type.PKG) {
             // check pkg name with expected name
         } else {
