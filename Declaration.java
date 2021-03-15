@@ -11,6 +11,7 @@ public class Declaration {
         Iterator<String> linesIterator = declarationLines.iterator();
         String root = "";
         String lang = "";
+        String entry = "";
         while (linesIterator.hasNext()) {
             String line = linesIterator.next();
             if (line != null && line.startsWith("root")) {
@@ -19,17 +20,25 @@ public class Declaration {
             if (line != null && line.startsWith("lang")) {
                 lang = line.substring(5);
             }
+            if (line != null && line.startsWith("entry")) {
+                entry = line.split("\\x20+")[1];
+            }
         }
-        return new Declaration(root, path.toString(), lang);
+        if (!entry.startsWith(root)) {
+            entry = root + "." + entry;
+        }
+        return new Declaration(root, path.toString(), lang, entry);
     }
 
     public String root;
     public String path;
     public String lang;
+    public String entry;
 
-    Declaration(String root, String path, String lang) {
+    Declaration(String root, String path, String lang, String entry) {
         this.root = root;
         this.path = path;
         this.lang = lang;
+        this.entry = entry;
     }
 }

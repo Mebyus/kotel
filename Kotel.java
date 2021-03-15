@@ -6,6 +6,10 @@ public class Kotel {
         String[] installVals = {};
         dispatcher.register(new CommandTemplate("install", installBools, installVals), new InstallExecutor());
 
+        String[] runBools = {};
+        String[] runVals = {};
+        dispatcher.register(new CommandTemplate("run", runBools, runVals), new RunExecutor());
+
         dispatcher.dispatch(args);
     }
 }

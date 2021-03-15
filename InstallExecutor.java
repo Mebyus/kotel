@@ -14,7 +14,7 @@ public class InstallExecutor implements CommandExecutor {
         return destination;
     }
 
-    private static String getTargetPath(String[] targets) {
+    public static String getTargetPath(String[] targets) {
         String targetPath;
         if (targets.length == 0) {
             targetPath = ".";
