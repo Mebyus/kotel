@@ -6,28 +6,27 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Declaration {
+    public static String[] fields(String s) {
+        return s.split("\\x20+");
+    }
+
     public static Declaration from(Path path) throws IOException {
         List<String> declarationLines = Files.readAllLines(path.resolve(".kotel"), Charset.forName("utf-8"));
         Iterator<String> linesIterator = declarationLines.iterator();
-        String root = "";
-        String lang = "";
-        String entry = "";
+        Declaration res = new Declaration("", path.toString(), "", "");
         while (linesIterator.hasNext()) {
             String line = linesIterator.next();
-            if (line != null && line.startsWith("root")) {
-                root = line.substring(5);
-            }
-            if (line != null && line.startsWith("lang")) {
-                lang = line.substring(5);
-            }
-            if (line != null && line.startsWith("entry")) {
-                entry = line.split("\\x20+")[1];
+            String[] fields = Declaration.fields(line);
+            if (fields.length > 1) {
+                String attribute = fields[0];
+                String value = fields[1];
+                res.process(attribute, value);
             }
         }
-        if (!entry.startsWith(root)) {
-            entry = root + "." + entry;
+        if (!res.entry.startsWith(res.root)) {
+            res.entry = res.root + "." + res.entry;
         }
-        return new Declaration(root, path.toString(), lang, entry);
+        return res;
     }
 
     public String root;
@@ -40,5 +39,20 @@ public class Declaration {
         this.path = path;
         this.lang = lang;
         this.entry = entry;
+    }
+
+    private void process(String attribute, String value) {
+        switch (attribute) {
+        case "root":
+            this.root = value;
+            break;
+        case "lang":
+            this.lang = value;
+            break;
+        case "entry":
+            this.entry = value;
+            break;
+        default:
+        }
     }
 }
